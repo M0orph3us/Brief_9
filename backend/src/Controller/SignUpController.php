@@ -9,7 +9,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Users;
 
-
 class SignUpController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
@@ -24,10 +23,8 @@ class SignUpController extends AbstractController
 
     public function __invoke(Request $request): Response
     {
-        // Décode la requête.
         $requestContent = json_decode($request->getContent(), true);
-        // Si les clés "email" et "password" ne sont pas présentent dans la
-        // requête renvoie une erreur.
+
         if (
             !array_key_exists('email', $requestContent) ||
             !array_key_exists(
@@ -36,24 +33,31 @@ class SignUpController extends AbstractController
             )
         ) {
 
-            $message = 'Un problème technique est survenu, veuillez réessayer ultérieu';
+            $message = 'Un problème technique est survenu, veuillez réessayer ultérieurement';
 
             return new Response($message, 500);
         }
         $userEmail = $requestContent['email'];
         $userPassword = $requestContent['password'];
+        $userFirstname = $requestContent['firstname'];
+        $userLastname = $requestContent['lastname'];
         $userRepository = $this->entityManager->getRepository(Users::class);
         $registeredUser = $userRepository->findOneBy(['email' => $userEmail]);
-        // Si l'utilisateur est déjà enregistré renvoie une erreur.
+
         if ($registeredUser) {
             return new Response('Adresse email déjà enregistrée', 409);
         }
-        // Hash le mot de passe de l'utilisateur et l'enregistre.
+
         $newUser = new Users();
-        $newUser->setEmail($userEmail);
-        $newUser->setPassword(
-            $this->passwordHasher->hashPassword($newUser, $userPassword)
-        );
+        $newUser
+            ->setEmail($userEmail)
+            ->setPassword(
+                $this->passwordHasher->hashPassword($newUser, $userPassword)
+            )
+            ->setFirstname($userFirstname)
+            ->setLastname($userLastname)
+            ->setRoles()
+            ->setCreatedAt();
         $this->entityManager->persist($newUser);
         $this->entityManager->flush();
         return new Response('OK', 200);
