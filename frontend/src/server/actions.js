@@ -1,7 +1,7 @@
 "use server";
 export async function Login(formData) {
-  const username = formData.get("username").value;
-  const password = formData.get("password").value;
+  const username = formData.get("username");
+  const password = formData.get("password");
   const res = await fetch("https://127.0.0.1:8000/api/login_check", {
     method: "POST",
     headers: {
@@ -11,7 +11,9 @@ export async function Login(formData) {
   });
 
   const data = await res.json();
-  console.log(data);
-
-  return Response.json(data);
+  console.log(res.ok);
+  return {
+    status: res.status,
+    data: data,
+  };
 }
