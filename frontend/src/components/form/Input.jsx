@@ -1,5 +1,5 @@
-export default function Input({ id, type, value, onChange = null }) {
+export default function Input({ id, type, name, value, onChange = null }) {
   return (
-    <input id={id} type={type} name={id} value={value} onChange={onChange} />
+    <input id={id} type={type} name={name} value={value} onChange={onChange} />
   );
 }
