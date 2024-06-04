@@ -33,7 +33,7 @@ class SignUpController extends AbstractController
             )
         ) {
 
-            $message = 'Un problème technique est survenu, veuillez réessayer ultérieurement';
+            $message = json_encode('Un problème technique est survenu, veuillez réessayer ultérieurement');
 
             return new Response($message, 500);
         }
@@ -45,7 +45,8 @@ class SignUpController extends AbstractController
         $registeredUser = $userRepository->findOneBy(['email' => $userEmail]);
 
         if ($registeredUser) {
-            return new Response('Adresse email déjà enregistrée', 409);
+            $message = json_encode('Adresse email déjà enregistrée');
+            return new Response($message, 409);
         }
 
         $newUser = new Users();
@@ -60,6 +61,8 @@ class SignUpController extends AbstractController
             ->setCreatedAt();
         $this->entityManager->persist($newUser);
         $this->entityManager->flush();
-        return new Response('OK', 200);
+        $message = json_encode("ok");
+
+        return new Response($message, 200);
     }
 }
