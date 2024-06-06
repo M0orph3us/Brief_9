@@ -2,7 +2,7 @@ import Button from "@/components/button/Button";
 import Form from "@/components/form/Form";
 import Input from "@/components/form/Input";
 import Label from "@/components/form/Label";
-import { register } from "../lib/actions";
+import { register } from "@/app/lib/actions";
 
 export default function Register() {
   return (
