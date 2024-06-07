@@ -2,21 +2,24 @@
 
 namespace App\Services;
 
-function verifLuhn($number)
+trait VerifLuhn
 {
-    $number = strrev(str_replace(' ', '', $number));
+    function verifLuhn($number)
+    {
+        $number = strrev(str_replace(' ', '', $number));
 
-    $sum = 0;
-    for ($i = 0, $j = strlen($number); $i < $j; $i++) {
-        $digit = (int)$number[$i];
+        $sum = 0;
+        for ($i = 0, $j = strlen($number); $i < $j; $i++) {
+            $digit = (int)$number[$i];
 
-        if ($i % 2 == 1) {
-            $digit *= 2;
-            if ($digit > 9) {
-                $digit -= 9;
+            if ($i % 2 == 1) {
+                $digit *= 2;
+                if ($digit > 9) {
+                    $digit -= 9;
+                }
             }
+            $sum += $digit;
         }
-        $sum += $digit;
+        return $sum % 10 === 0 ? true : false;
     }
-    return $sum % 10 == 0;
 }

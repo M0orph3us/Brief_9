@@ -9,16 +9,21 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
 use App\Controller\SignUpController;
 use DateTimeImmutable;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[ApiResource(
-    operations: [
-        new Post(controller: SignUpController::class)
-    ]
-)
+#[
+    ApiResource(
+        operations: [
+            new Post(controller: SignUpController::class),
+            new Get(),
+            new Patch()
+        ]
+    )
 ]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
