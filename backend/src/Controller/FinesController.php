@@ -13,7 +13,7 @@ class FinesController extends AbstractController
 {
     use VerifCodeFine;
 
-    #[Route('/checkFine', methods: ['POST', 'GET'])]
+    #[Route('/checkFine', methods: ['POST'])]
     public function index(Request $request, FinesRepository $finesRepo): JsonResponse
     {
         $data = $request->getPayload();
