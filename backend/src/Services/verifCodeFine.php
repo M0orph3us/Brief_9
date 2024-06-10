@@ -6,7 +6,7 @@ trait VerifCodeFine
 {
     function verifCodeFine($code)
     {
-        if (strlen($code) != 14) {
+        if (strlen($code) != 12) {
             return false;
         }
 

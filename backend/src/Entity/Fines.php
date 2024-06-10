@@ -28,6 +28,12 @@ class Fines
     #[ORM\Column(length: 50)]
     private ?string $lastname = null;
 
+    #[ORM\ManyToOne(inversedBy: 'fines_paid')]
+    private ?Users $users = null;
+
+    #[ORM\Column]
+    private ?bool $Paid = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,6 +83,30 @@ class Fines
     public function setLastname(string $lastname): static
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getUsers(): ?Users
+    {
+        return $this->users;
+    }
+
+    public function setUsers(?Users $users): static
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+    public function isPaid(): ?bool
+    {
+        return $this->Paid;
+    }
+
+    public function setPaid(bool $Paid): static
+    {
+        $this->Paid = $Paid;
 
         return $this;
     }

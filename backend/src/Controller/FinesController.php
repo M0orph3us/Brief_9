@@ -13,22 +13,49 @@ class FinesController extends AbstractController
 {
     use VerifCodeFine;
 
-    #[Route('/checkFine', methods: ['POST'])]
-    public function index(Request $request, FinesRepository $finesRepo): JsonResponse
+    #[Route('/getFine', methods: ['POST'])]
+    public function getFine(Request $request, FinesRepository $finesRepo): JsonResponse
     {
-        $data = $request->getPayload();
-        $idNumbers = $data->get('id_numbers');
-        $getIdFine = $finesRepo->findOneBy(["id_numbers" => $idNumbers]);
-        if ($getIdFine) {
-        }
-        $return =
-            [
-                "data" => "OK",
-                "info" => "BAD"
+        $dataPost = $request->getPayload();
+        $idNumbers = $dataPost->get('id_numbers');
 
+        if ($this->verifCodeFine($idNumbers)) {
+            $idNumbersValid = $idNumbers;
+            $getFine = $finesRepo->findOneBy(['id_numbers' => $idNumbersValid]);
+            if ($getFine) {
+                $price = $getFine->getPrice();
+                $data = [
+                    "message" => "The fine was found",
+                    "price" => $price
+                ];
+            } else {
+                $data =
+                    [
+                        "message" => "This identifier does not exist"
+                    ];
+            }
+        } else {
+            $data = [
+                "message" => "The format of the fine identifier is not correct"
             ];
+        }
 
 
-        return $this->json($return);
+
+
+
+        return $this->json($data);
+    }
+
+    #[Route('/payment', methods: ['POST'])]
+    public function paymentFine(Request $request, FinesRepository $finesRepo): JsonResponse
+    {
+        $dataPost = $request->getPayload();
+
+
+
+
+
+        return $this->json($data);
     }
 }

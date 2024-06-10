@@ -46,3 +46,24 @@ export async function register(formData) {
     data: data,
   };
 }
+
+export async function getFine(formData) {
+  const idNumbers = formData.get("id_numbers");
+
+  const res = await fetch("https://127.0.0.1:8000/getFine", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id_numbers: idNumbers,
+    }),
+  });
+  const data = await res.json();
+  log(data);
+  return {
+    ok: res.ok,
+    status: res.status,
+    data: data,
+  };
+}

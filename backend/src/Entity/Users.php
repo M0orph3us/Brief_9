@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -58,6 +60,17 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updated_at = null;
+
+    /**
+     * @var Collection<int, Fines>
+     */
+    #[ORM\OneToMany(targetEntity: Fines::class, mappedBy: 'users')]
+    private Collection $fines_paid;
+
+    public function __construct()
+    {
+        $this->fines_paid = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -174,6 +187,36 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt(?\DateTimeInterface $updated_at): static
     {
         $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Fines>
+     */
+    public function getFinesPaid(): Collection
+    {
+        return $this->fines_paid;
+    }
+
+    public function addFinesPaid(Fines $finesPaid): static
+    {
+        if (!$this->fines_paid->contains($finesPaid)) {
+            $this->fines_paid->add($finesPaid);
+            $finesPaid->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFinesPaid(Fines $finesPaid): static
+    {
+        if ($this->fines_paid->removeElement($finesPaid)) {
+            // set the owning side to null (unless already changed)
+            if ($finesPaid->getUsers() === $this) {
+                $finesPaid->setUsers(null);
+            }
+        }
 
         return $this;
     }
