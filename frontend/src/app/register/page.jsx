@@ -1,13 +1,14 @@
+"use server";
+import Link from "next/link";
 import Button from "@/components/button/Button";
 import Form from "@/components/form/Form";
 import Input from "@/components/form/Input";
 import Label from "@/components/form/Label";
 import { register } from "@/app/lib/actions";
 
-export default function Register() {
+export default async function Register() {
   return (
     <>
-      <h1>Hello</h1>
       <Form action={register}>
         <div>
           <Label htmlFor={"email-register"}>Email : </Label>
@@ -27,6 +28,7 @@ export default function Register() {
         </div>
         <Button type={"submit"}>Register</Button>
       </Form>
+      <Link href={"/"}>Back to login</Link>
     </>
   );
 }

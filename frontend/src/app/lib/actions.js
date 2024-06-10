@@ -1,5 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 export async function authenticate(formData) {
   const email = formData.get("email");
   const password = formData.get("password");
@@ -12,12 +13,10 @@ export async function authenticate(formData) {
   });
   const data = await res.json();
   if (res.ok) {
-    cookies().set("token", data);
-    return {
-      ok: res.ok,
-      status: res.status,
-      data: data,
-    };
+    cookies().set("token", data.token);
+    redirect(`/profil/${data.id}`);
+  } else {
+    redirect("/");
   }
 }
 
@@ -40,11 +39,9 @@ export async function register(formData) {
     }),
   });
   const data = await res.json();
-  return {
-    ok: res.ok,
-    status: res.status,
-    data: data,
-  };
+  if (res.ok) {
+    redirect("/");
+  }
 }
 
 export async function getFine(formData) {
@@ -60,7 +57,26 @@ export async function getFine(formData) {
     }),
   });
   const data = await res.json();
-  log(data);
+  return {
+    ok: res.ok,
+    status: res.status,
+    data: data,
+  };
+}
+
+export async function payement(formData) {
+  const idNumbers = formData.get("id_numbers");
+
+  const res = await fetch("https://127.0.0.1:8000/getFine", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id_numbers: idNumbers,
+    }),
+  });
+  const data = await res.json();
   return {
     ok: res.ok,
     status: res.status,

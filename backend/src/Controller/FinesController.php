@@ -39,23 +39,18 @@ class FinesController extends AbstractController
                 "message" => "The format of the fine identifier is not correct"
             ];
         }
-
-
-
-
-
         return $this->json($data);
     }
 
-    #[Route('/payment', methods: ['POST'])]
-    public function paymentFine(Request $request, FinesRepository $finesRepo): JsonResponse
-    {
-        $dataPost = $request->getPayload();
+    // #[Route('/payment', methods: ['POST'])]
+    // public function paymentFine(Request $request, FinesRepository $finesRepo): JsonResponse
+    // {
+    //     $dataPost = $request->getPayload();
 
 
 
 
 
-        return $this->json($data);
-    }
+    //     // return $this->json($data);
+    // }
 }
