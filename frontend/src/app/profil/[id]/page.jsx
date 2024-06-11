@@ -1,29 +1,16 @@
-"use server";
+"use client";
+import UserProfil from "@/components/User/Profil/Profil";
+import Button from "@/components/button/Button";
+import { useState } from "react";
 
-import Link from "next/link";
-
-export default async function Profil({ params }) {
-  const id = params.id;
-  const res = await fetch(`https://127.0.0.1:8000/api/userss/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/ld+json",
-    },
-  });
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
+export default function Profil({ params }) {
   return (
     <>
-      <div className="profil-container">
-        <h1>Profil</h1>
-        <p>Firstname : {data.firstname}</p>
-        <p>Lastname : {data.lastname}</p>
-        <p>Email : {data.email}</p>
+    <div className="menu-container">
+        <Button onClick="">Profil</Button>
+        <Button onClick="">Fines paid</Button>
       </div>
-      {/* <Link /> */}
+      <UserProfil id={params.id} />
     </>
   );
 }

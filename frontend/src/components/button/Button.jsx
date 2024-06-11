@@ -1,4 +1,4 @@
-export default function Button({ id = null, type, children }) {
+export default function Button({ id = null, type = "button", children }) {
   return (
     <button id={id} type={type}>
       {children}
