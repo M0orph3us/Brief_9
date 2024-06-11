@@ -44,6 +44,29 @@ export async function register(formData) {
   }
 }
 
+export async function edit(formData) {
+  const email = formData.get("email");
+  const firstname = formData.get("firstname");
+  const lastname = formData.get("lastname");
+  const id = formData.get("id");
+
+  const res = await fetch(`https://127.0.0.1:8000/api/userss/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/merge-patch+json",
+    },
+    body: JSON.stringify({
+      email: email,
+      firstname: firstname,
+      lastname: lastname,
+    }),
+  });
+  const data = await res.json();
+  if (res.ok) {
+    redirect(`/user/${id}/profil`);
+  }
+}
+
 export async function getFine(formData) {
   const idNumbers = formData.get("id_numbers");
 
@@ -67,7 +90,7 @@ export async function getFine(formData) {
 export async function payement(formData) {
   const idNumbers = formData.get("id_numbers");
 
-  const res = await fetch("https://127.0.0.1:8000/getFine", {
+  const res = await fetch("https://127.0.0.1:8000/payment", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

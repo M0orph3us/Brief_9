@@ -1,6 +1,10 @@
 "use server";
-export default async function UserProfil({ id }) {
+import Link from "next/link";
+
+export default async function Profil({ params }) {
+  const id = params.id;
   const res = await fetch(`https://127.0.0.1:8000/api/userss/${id}`, {
+    cache: "no-store",
     method: "GET",
     headers: {
       "Content-Type": "application/ld+json",
@@ -19,6 +23,7 @@ export default async function UserProfil({ id }) {
         <p>Lastname : {data.lastname}</p>
         <p>Email : {data.email}</p>
       </div>
+      <Link href={`/user/${id}/edit`}>Edit profil</Link>
     </>
   );
 }

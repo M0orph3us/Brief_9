@@ -3,7 +3,7 @@ import Button from "@/components/button/Button";
 import Form from "@/components/form/Form";
 import Input from "@/components/form/Input";
 import Label from "@/components/form/Label";
-import { payement } from "../lib/actions";
+import { payement } from "@/app/lib/actions";
 
 export default async function Payment() {
   return (
